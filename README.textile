@@ -1,0 +1,38 @@
+
+h2. Purpose
+
+Intends to provide a visually different prompt for each (user,machine) tuple that:
+* that is visually and intuitively different
+** to help prevent sending a command to one machine that was intended for another (when you have terminals open for SO MANY different machines)
+* has the same/useful/familiar information (the text of the prompt itself is not actually changed)
+* without having to *configure* each one to be different
+
+The exception to this is when the shell is the 'root' user (on any machine), which is simply bold/red to:
+* remind you that the shell should probably not be left open
+* remind you to be careful with what you type
+* to avoid all the extra calls to 'other binaries' that calculating and applying the shell colors would require
+** often, when you are using root, stuff might be broken... and you would probably still want a usable prompt.
+
+h2. License
+
+GPLv2
+
+h2. Features
+
+* layout is the default prompt from fedora/redhat
+* hostname color should:
+** change from machine to machine
+** stay the same on the same machine with different users
+** stay the same from one shell to the next
+* username color should:
+** change from user-to-user
+** change from machine to machine (even if login is same!)
+** stay the same on the same machine with different users
+** stay the same from one shell to the next
+* should not interfere with readline character counting
+
+h2. Installation
+
+> rpmbuild -ba colored-user-host-prompt.spec
+> sudo rpm -i ${RPM_WRITTEN_FROM_ABOVE_OUTPUT}
+
