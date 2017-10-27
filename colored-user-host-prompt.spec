@@ -1,6 +1,6 @@
 
 Name:           colored-user-host-prompt
-Version:        0.0.2
+Version:        0.1.0
 Release:        1
 Summary:        ANSI colored terminal prompts to help prevent sending the right commands to the wrong user or machine.
 
@@ -37,7 +37,14 @@ PS1='\[\e[1;31m\][\u \W]\$\[\e[0m\] '
 
 else
 
-TERM_COLORS=$(infocmp -1 | expand | sed -n -e "s/^ *colors#\([0-9][0-9]*\),.*/\1/p")
+TERM_COLORS=$(infocmp -1 | sed -n -e "s/^\t*colors#\([0-9][0-9x]*\),.*/\1/p")
+
+if [ "${TERM_COLORS:1:1}" == "x" ]
+then
+	#convert from hex to decimal
+	TERM_COLORS="$((16#${TERM_COLORS:2}))"
+fi
+
 USERNAME_COLOR=$(echo $HOSTNAME $USER | sum | awk -v ncolors=$TERM_COLORS 'ncolors>1 {print 1 + ($1 % (ncolors - 1))}')
 HOSTNAME_COLOR=$(hostname | sum | awk -v ncolors=$TERM_COLORS 'ncolors>1 {print 1 + ($1 % (ncolors - 1))}')
 PS1_USER="\[$(tput setaf $USERNAME_COLOR)\]\u\[\e[m\]"
